@@ -1,0 +1,387 @@
+/* =============================================
+   HAVELI - ANIMATIONS CSS
+   ============================================= */
+
+/* Keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    14% { transform: scale(1.15); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.15); }
+    70% { transform: scale(1); }
+}
+
+/* Utility Animation Classes */
+.animate-fadeIn { animation: fadeIn 0.5s ease both; }
+.animate-fadeInUp { animation: fadeInUp 0.6s ease both; }
+.animate-fadeInDown { animation: fadeInDown 0.6s ease both; }
+.animate-fadeInLeft { animation: fadeInLeft 0.6s ease both; }
+.animate-fadeInRight { animation: fadeInRight 0.6s ease both; }
+.animate-scaleIn { animation: scaleIn 0.4s ease both; }
+.animate-bounceIn { animation: bounceIn 0.7s ease both; }
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-600 { animation-delay: 0.6s; }
+.delay-700 { animation-delay: 0.7s; }
+.delay-800 { animation-delay: 0.8s; }
+
+/* Skeleton Loading */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 1.5s infinite linear;
+    border-radius: 4px;
+}
+
+.skeleton-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #f0f0f0;
+}
+.skeleton-img { height: 200px; }
+.skeleton-body { padding: 16px; }
+.skeleton-title { height: 18px; margin-bottom: 10px; border-radius: 4px; }
+.skeleton-text { height: 12px; margin-bottom: 6px; border-radius: 4px; }
+.skeleton-text.w-60 { width: 60%; }
+.skeleton-text.w-80 { width: 80%; }
+.skeleton-btn { height: 38px; border-radius: 8px; margin-top: 12px; }
+
+/* Hover Effects */
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+.hover-scale {
+    transition: transform 0.3s ease;
+}
+.hover-scale:hover { transform: scale(1.05); }
+
+.hover-glow:hover {
+    box-shadow: 0 0 20px rgba(192, 57, 43, 0.4);
+}
+
+/* Ripple Effect */
+.ripple {
+    position: relative;
+    overflow: hidden;
+}
+.ripple::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+    opacity: 0;
+}
+.ripple:active::after {
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+}
+
+/* Food Card Hover Animation */
+.food-card .food-card-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.food-card:hover .food-card-image::after { opacity: 1; }
+
+/* Quick View Button */
+.food-card .quick-view-btn {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: white;
+    color: var(--primary);
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 2;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+.food-card:hover .quick-view-btn {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Counter Animation */
+.count-up {
+    display: inline-block;
+}
+
+/* Progress Bar Animation */
+.progress-bar {
+    height: 6px;
+    background: var(--border-light);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    width: 0;
+    transition: width 1.5s ease;
+}
+
+/* Notification Bell */
+.bell-ring {
+    animation: wiggle 0.5s ease 3;
+    display: inline-block;
+}
+
+/* Cart Item Add Animation */
+.cart-item-adding {
+    animation: fadeInRight 0.3s ease;
+}
+
+/* Order Status Timeline */
+.timeline {
+    position: relative;
+    padding-left: 32px;
+}
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border-light);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 24px;
+    animation: fadeInLeft 0.4s ease both;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -27px;
+    top: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--border-light);
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px var(--border-light);
+}
+.timeline-item.done .timeline-dot {
+    background: var(--success);
+    box-shadow: 0 0 0 2px var(--success);
+}
+.timeline-item.current .timeline-dot {
+    background: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary);
+    animation: pulse 2s infinite;
+}
+
+.timeline-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
+.timeline-msg { color: var(--text-muted); font-size: 0.85rem; }
+.timeline-time { color: var(--text-muted); font-size: 0.75rem; margin-top: 4px; }
+
+/* Confetti (Order Success) */
+.confetti-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    border-radius: 2px;
+    animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+    to {
+        top: 110%;
+        transform: rotate(720deg) translateX(var(--tx, 0));
+        opacity: 0;
+    }
+}
+
+/* Smooth Page Transitions */
+.page-transition {
+    animation: fadeIn 0.4s ease;
+}
+
+/* Floating Labels */
+.floating-label-group {
+    position: relative;
+}
+.floating-label-group input,
+.floating-label-group textarea {
+    padding-top: 20px;
+}
+.floating-label-group label {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    background: transparent;
+}
+.floating-label-group input:focus ~ label,
+.floating-label-group input:not(:placeholder-shown) ~ label,
+.floating-label-group textarea:focus ~ label,
+.floating-label-group textarea:not(:placeholder-shown) ~ label {
+    top: 8px;
+    transform: none;
+    font-size: 0.72rem;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Star Rating Interactive */
+.star-rating-input {
+    display: flex;
+    gap: 6px;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+.star-rating-input input { display: none; }
+.star-rating-input label {
+    font-size: 1.6rem;
+    color: var(--border);
+    cursor: pointer;
+    transition: color 0.1s ease, transform 0.1s ease;
+}
+.star-rating-input label:hover,
+.star-rating-input label:hover ~ label,
+.star-rating-input input:checked ~ label {
+    color: var(--accent);
+}
+.star-rating-input label:hover { transform: scale(1.2); }
+
+/* Typing Animation */
+.typing-text::after {
+    content: '|';
+    animation: blink 0.7s infinite;
+    color: var(--primary);
+}
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Gradient Border */
+.gradient-border {
+    position: relative;
+    background: white;
+    border-radius: var(--radius-lg);
+}
+.gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+    border-radius: inherit;
+    z-index: -1;
+}
+
+/* Spice Level Indicator */
+.spice-indicator {
+    display: flex;
+    gap: 3px;
+}
+.spice-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border-light);
+    transition: var(--transition-fast);
+}
+.spice-dot.active.mild { background: #27ae60; }
+.spice-dot.active.medium { background: var(--accent); }
+.spice-dot.active.hot { background: var(--secondary); }
+.spice-dot.active.extra_hot { background: var(--primary); }

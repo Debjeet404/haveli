@@ -1,0 +1,259 @@
+<?php
+// includes/header.php
+// =============================================
+// GLOBAL PAGE HEADER
+// =============================================
+
+require_once __DIR__ . '/../config/functions.php';
+startSecureSession();
+
+$siteName = getSetting('site_name', 'Haveli');
+$siteTagline = getSetting('site_tagline', 'Authentic Flavors, Royal Experience');
+$currency = getSetting('currency_symbol', 'Rs');
+$deliveryCharge = getSetting('delivery_charge', 150);
+$freeDeliveryMin = getSetting('free_delivery_min', 1000);
+$taxPercent = getSetting('tax_percentage', 5);
+$darkModeDefault = getSetting('dark_mode_default', 1);
+$announcementActive = getSetting('announcement_active', 0);
+$announcementText = getSetting('announcement_text', '');
+
+$cartCount = getCartCount();
+$currentUser = getCurrentUser();
+$pageTitle = isset($pageTitle) ? $pageTitle . ' | ' . $siteName : $siteName . ' - ' . $siteTagline;
+$bodyClass = isset($bodyClass) ? $bodyClass : '';
+
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
+header('X-XSS-Protection: 1; mode=block');
+?>
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-default-dark="<?= $darkModeDefault ?>">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="<?= getSetting('site_description', $siteTagline) ?>">
+  <meta name="theme-color" content="#ff6b00">
+  <meta property="og:title" content="<?= $pageTitle ?>">
+  <meta property="og:description" content="<?= getSetting('site_description', '') ?>">
+  
+  <title><?= htmlspecialchars($pageTitle) ?></title>
+  
+  <!-- Favicon -->
+  <?php if ($favicon = getSetting('site_favicon')): ?>
+    <link rel="icon" href="<?= $favicon ?>">
+  <?php else: ?>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏰</text></svg>">
+  <?php endif; ?>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/animations.css">
+  
+  <!-- Custom Colors from Admin -->
+  <?php if ($primaryColor = getSetting('primary_color', '#ff6b00')): ?>
+  <style>
+    :root {
+      --primary: <?= $primaryColor ?>;
+      --primary-light: <?= $primaryColor ?>cc;
+      --gradient-primary: linear-gradient(135deg, <?= $primaryColor ?>, <?= $primaryColor ?>aa);
+    }
+  </style>
+  <?php endif; ?>
+</head>
+<body class="<?= $bodyClass ?>" 
+      data-currency="<?= $currency ?>"
+      data-delivery-charge="<?= $deliveryCharge ?>"
+      data-free-delivery="<?= $freeDeliveryMin ?>"
+      data-tax="<?= $taxPercent ?>">
+
+<!-- Page Loader -->
+<div id="pageLoader" class="page-loader">
+  <div class="loader-logo">🏰 <?= htmlspecialchars($siteName) ?></div>
+  <div class="loader-ring"></div>
+</div>
+
+<!-- Custom Cursor -->
+<div class="cursor"></div>
+<div class="cursor-follower"></div>
+
+<!-- Announcement Bar -->
+<?php if ($announcementActive && $announcementText): ?>
+<div id="announcementBar" class="announcement-bar" data-active="1">
+  📢 <?= htmlspecialchars($announcementText) ?>
+</div>
+<?php endif; ?>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <!-- Logo -->
+    <a href="/" class="nav-logo" data-no-transition>
+      <?php if ($logo = getSetting('site_logo')): ?>
+        <img src="<?= $logo ?>" alt="<?= $siteName ?>" style="height:42px;">
+      <?php else: ?>
+        <div class="nav-logo-icon">🏰</div>
+        <span><?= htmlspecialchars($siteName) ?></span>
+      <?php endif; ?>
+    </a>
+    
+    <!-- Nav Links -->
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/menu.php">Menu</a></li>
+      <li><a href="/offers.php">Offers</a></li>
+      <li><a href="/about.php">About</a></li>
+      <li><a href="/contact.php">Contact</a></li>
+    </ul>
+    
+    <!-- Nav Actions -->
+    <div class="nav-actions">
+      <!-- Theme Toggle -->
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+        <span class="theme-icon">☀️</span>
+      </button>
+      
+      <!-- Cart -->
+      <button class="cart-btn" aria-label="Cart">
+        <span>🛒</span>
+        <span class="cart-count" style="display:<?= $cartCount > 0 ? 'flex' : 'none' ?>"><?= $cartCount ?></span>
+      </button>
+      
+      <!-- User -->
+      <?php if ($currentUser): ?>
+        <div class="user-menu">
+          <div class="user-avatar">
+            <?php if ($currentUser['profile_photo']): ?>
+              <img src="<?= htmlspecialchars($currentUser['profile_photo']) ?>" alt="Profile">
+            <?php else: ?>
+              <?= strtoupper(substr($currentUser['name'], 0, 1)) ?>
+            <?php endif; ?>
+          </div>
+          <div class="user-dropdown" id="userDropdown">
+            <div class="user-dropdown-header">
+              <div class="user-dropdown-name"><?= htmlspecialchars($currentUser['name']) ?></div>
+              <div class="user-dropdown-email"><?= htmlspecialchars($currentUser['email']) ?></div>
+            </div>
+            <div class="user-dropdown-links">
+              <a href="/profile.php">👤 My Profile</a>
+              <a href="/order-history.php">📦 My Orders</a>
+              <a href="/order-tracking.php">🚗 Track Order</a>
+              <a href="/offers.php">🎁 Offers</a>
+              <div style="border-top:1px solid var(--border);margin:8px 0;"></div>
+              <a href="/api/auth.php?action=logout" style="color:#ef4444;" data-no-transition>🚪 Logout</a>
+            </div>
+          </div>
+        </div>
+      <?php else: ?>
+        <a href="/login.php" class="btn btn-outline btn-sm">Login</a>
+        <a href="/signup.php" class="btn btn-primary btn-sm">Sign Up</a>
+      <?php endif; ?>
+      
+      <!-- Mobile Menu Toggle -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Cart Overlay & Sidebar -->
+<div id="cartOverlay" class="cart-overlay"></div>
+<div id="cartSidebar" class="cart-sidebar">
+  <div class="cart-sidebar-header">
+    <div class="cart-sidebar-title">🛒 Your Cart</div>
+    <button id="cartClose" class="cart-close-btn">✕</button>
+  </div>
+  
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <div class="cart-empty-icon">🛒</div>
+      <h4>Your cart is empty</h4>
+      <p>Add some delicious food!</p>
+    </div>
+  </div>
+  
+  <div class="cart-sidebar-footer">
+    <div class="cart-summary" id="cartSummary"></div>
+    <a href="/checkout.php" class="btn btn-primary w-full">
+      Proceed to Checkout →
+    </a>
+    <button onclick="HaveliApp.closeCart()" class="btn btn-glass w-full mt-2">
+      Continue Shopping
+    </button>
+  </div>
+</div>
+
+<!-- Floating Cart -->
+<button class="floating-cart" onclick="HaveliApp.openCart()" aria-label="View cart">
+  🛒
+  <span class="cart-badge" style="display:<?= $cartCount > 0 ? 'flex' : 'none' ?>"><?= $cartCount ?></span>
+</button>
+
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-nav">
+  <ul class="mobile-nav-links">
+    <li>
+      <a href="/">
+        <span class="mobile-nav-icon">🏠</span>
+        Home
+      </a>
+    </li>
+    <li>
+      <a href="/menu.php">
+        <span class="mobile-nav-icon">🍽️</span>
+        Menu
+      </a>
+    </li>
+    <li>
+      <a href="#" onclick="HaveliApp.openCart();return false;" class="mobile-cart-badge">
+        <span class="mobile-nav-icon" style="position:relative;">
+          🛒
+          <span class="badge mobile-cart-count" style="position:absolute;top:-4px;right:-8px;background:var(--primary);color:white;border-radius:50%;width:16px;height:16px;font-size:0.6rem;display:<?= $cartCount > 0 ? 'flex' : 'none' ?>;align-items:center;justify-content:center;font-weight:700;"><?= $cartCount ?></span>
+        </span>
+        Cart
+      </a>
+    </li>
+    <li>
+      <a href="/order-history.php">
+        <span class="mobile-nav-icon">📦</span>
+        Orders
+      </a>
+    </li>
+    <li>
+      <a href="<?= $currentUser ? '/profile.php' : '/login.php' ?>">
+        <span class="mobile-nav-icon">👤</span>
+        <?= $currentUser ? 'Profile' : 'Login' ?>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<!-- Offer Popup -->
+<?php 
+$showPopup = getSetting('show_popup', 0);
+$popupTitle = getSetting('popup_title', '');
+$popupText = getSetting('popup_text', '');
+if ($showPopup && $popupTitle):
+?>
+<div id="offerPopup" class="modal-overlay">
+  <div class="modal" style="text-align:center;overflow:hidden;">
+    <div style="background:var(--gradient-primary);padding:40px 24px;position:relative;">
+      <button class="popup-close" style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.2);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;">✕</button>
+      <div style="font-size:3rem;margin-bottom:12px;">🎉</div>
+      <h3 style="color:white;font-family:var(--font-display);font-size:1.8rem;"><?= htmlspecialchars($popupTitle) ?></h3>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:1.1rem;margin-bottom:24px;"><?= htmlspecialchars($popupText) ?></p>
+      <a href="/offers.php" class="btn btn-primary">View Offers</a>
+      <button class="popup-close btn btn-glass mt-2">Maybe Later</button>
+    </div>
+  </div>
+</div>
+<?php endif; ?>
